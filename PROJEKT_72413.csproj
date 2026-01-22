@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DatabaseService.cs" />
     <Compile Include="Models\Biuro.cs" />
     <Compile Include="Models\Hotel.cs" />
     <Compile Include="Models\Klient.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Models\Pracownik.cs" />
     <Compile Include="Models\Rezerwacja.cs" />
     <Compile Include="Models\Wycieczka.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +110,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="database\baza.sql" />
+    <Content Include="Database\baza.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
