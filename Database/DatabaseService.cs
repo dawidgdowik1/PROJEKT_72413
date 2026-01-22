@@ -1,10 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Data;
 
 namespace PROJEKT_72413.Database
 {
-    public class DatabaseService
+    public class DatabaseService : IDataService
     {
         private string connectionString = "server=localhost;database=biuro_podrozy;uid=root;pwd=admin123;";
 
@@ -12,36 +11,32 @@ namespace PROJEKT_72413.Database
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (var conn = new MySqlConnection(connectionString))
                 {
-                    conn.Open();
-                    return true;
+                    conn.Open(); return true;
                 }
             }
-            catch
-            {
-                return false;
-            }
+            catch { return false; }
         }
 
-        public DataTable GetTable(string query)
+        public DataTable GetTable(string sql)
         {
             DataTable dt = new DataTable();
-            try
+            using (var conn = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    adapter.Fill(dt);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                conn.Open();
+                new MySqlDataAdapter(sql, conn).Fill(dt);
             }
             return dt;
+        }
+
+        public int ExecuteCommand(string sql)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                return new MySqlCommand(sql, conn).ExecuteNonQuery();
+            }
         }
     }
 }

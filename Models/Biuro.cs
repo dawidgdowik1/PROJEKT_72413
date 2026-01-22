@@ -2,7 +2,7 @@
 
 namespace PROJEKT_72413.Models
 {
-    public class Biuro
+    public class Biuro : ObiektBazy
     {
         public int IdBiura { get; set; }
         public string Nazwa { get; set; }

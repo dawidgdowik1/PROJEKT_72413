@@ -1,10 +1,10 @@
 ﻿namespace PROJEKT_72413.Models
 {
-    public class Hotel
+    public class Hotel : ObiektBazy
     {
         public int IdHotelu { get; set; }
         public string Nazwa { get; set; }
-        public int Standard { get; set; } // np. liczba gwiazdek
+        public int Standard { get; set; } 
         public string Kraj { get; set; }
         public string Miasto { get; set; }
 
