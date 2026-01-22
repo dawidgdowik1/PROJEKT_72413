@@ -56,4 +56,5 @@ CREATE TABLE platnosci (
     data_platnosci DATE,
     id_rezerwacji INT,
     FOREIGN KEY (id_rezerwacji) REFERENCES rezerwacje(id_rezerwacji)
+
 );
