@@ -1,70 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="PROJEKT_72413.Models.Wycieczka" Collapsed="true">
-    <Position X="8" Y="7" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAgAAEAAAAAgAAAAAAAAAAgAAgAAgAACA=</HashCode>
-      <FileName>Models\Wycieczka.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Rezerwacja" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="PROJEKT_72413.Models.Biuro" Collapsed="true">
-    <Position X="8" Y="1" Width="1.5" />
+    <Position X="7" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAAgAAAAAAAAAAAgAAAgAAAAgAAAAAAA=</HashCode>
       <FileName>Models\Biuro.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Pracownik" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="PROJEKT_72413.Models.Hotel" Collapsed="true">
-    <Position X="5" Y="3" Width="1.5" />
+    <Position X="9.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAECAAgIAAAAgAAAAgAAAAAAA=</HashCode>
       <FileName>Models\Hotel.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Wycieczka" />
-      <Property Name="Biuro" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="PROJEKT_72413.Models.Klient" Collapsed="true">
-    <Position X="5" Y="5" Width="1.5" />
+    <Position X="16" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAIAAKAAAAAAAAAAAAAAAAAAAAAAgAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Klient.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Rezerwacja" />
-    </ShowAsAssociation>
+  </Class>
+  <Class Name="PROJEKT_72413.Models.ObiektBazy" Collapsed="true">
+    <Position X="13.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ObiektBazy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PROJEKT_72413.Models.Osoba" Collapsed="true">
+    <Position X="15" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Osoba.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Class Name="PROJEKT_72413.Models.Platnosc" Collapsed="true">
-    <Position X="11" Y="5" Width="1.5" />
+    <Position X="18.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABAAAACAAIAAAAAQAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>Models\Platnosc.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PROJEKT_72413.Models.Pracownik" Collapsed="true">
-    <Position X="8" Y="3" Width="1.5" />
+    <Position X="13.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAEAABAIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Pracownik.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PROJEKT_72413.Models.Rezerwacja" Collapsed="true">
-    <Position X="8" Y="5" Width="1.5" />
+    <Position X="11.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QEBAAAAEAAAAAAgAAAAAAAAAAAAAAAAAAAAABAAAACA=</HashCode>
       <FileName>Models\Rezerwacja.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Platnosc" />
-      <Property Name="Pracownik" />
-    </ShowAsAssociation>
+  </Class>
+  <Class Name="PROJEKT_72413.Models.Wycieczka" Collapsed="true">
+    <Position X="20.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAEAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Wycieczka.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

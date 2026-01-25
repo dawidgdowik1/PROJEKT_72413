@@ -177,22 +177,34 @@ namespace PROJEKT_72413
         {
             Console.WriteLine("\n--- NOWA REZERWACJA ---");
 
-            
-            Console.WriteLine("LISTA KLIENTÓW:");
+          
             DataTable dtK = db.GetTable("SELECT id_klienta, imie, nazwisko FROM klienci");
+            if (dtK.Rows.Count == 0)
+            {
+                Console.WriteLine("BŁĄD: Brak klientów w bazie. Dodaj klienta przed rezerwacją!");
+                return; 
+            }
+
+            Console.WriteLine("LISTA KLIENTÓW:");
             foreach (DataRow r in dtK.Rows)
                 Console.WriteLine($"[{r["id_klienta"]}] {r["imie"]} {r["nazwisko"]}");
 
-            
-            Console.WriteLine("\nLISTA WYCIECZEK:");
             DataTable dtW = db.GetTable("SELECT id_wycieczki, cel FROM wycieczki");
+            if (dtW.Rows.Count == 0)
+            {
+                Console.WriteLine("\nBŁĄD: Brak dostępnych wycieczek!");
+                return;
+            }
+
+            Console.WriteLine("\nLISTA WYCIECZEK:");
             foreach (DataRow r in dtW.Rows)
                 Console.WriteLine($"[{r["id_wycieczki"]}] {r["cel"]}");
 
-         
+          
             Console.Write("\nPodaj ID Klienta: "); string idK = Console.ReadLine();
             Console.Write("Podaj ID Wycieczki: "); string idW = Console.ReadLine();
 
+          
             if (!string.IsNullOrWhiteSpace(idK) && !string.IsNullOrWhiteSpace(idW))
             {
                 string sql = $"INSERT INTO rezerwacje (id_klienta, id_wycieczki, data_rezerwacji) VALUES ({idK}, {idW}, CURDATE())";
@@ -203,56 +215,46 @@ namespace PROJEKT_72413
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Błąd: Sprawdź czy podałeś poprawne ID! " + ex.Message);
+                    Console.WriteLine("Błąd SQL: Sprawdź czy podałeś poprawne ID z listy! " + ex.Message);
                 }
+            }
+            else
+            {
+                Console.WriteLine("Błąd: Pola ID nie mogą być puste!");
             }
         }
 
         static void RozliczPlatnosc(IDataService db)
         {
-            Console.WriteLine("\n--- ROZLICZENIE Z BIUREM (PŁATNOŚCI) ---");
-
-       
-            string sqlLista = @"SELECT r.id_rezerwacji, k.nazwisko, w.cel, w.cena 
-                        FROM rezerwacje r 
-                        JOIN klienci k ON r.id_klienta = k.id_klienta 
-                        JOIN wycieczki w ON r.id_wycieczki = w.id_wycieczki";
-
-            DataTable dt = db.GetTable(sqlLista);
-
-            if (dt.Rows.Count == 0)
-            {
-                Console.WriteLine("Brak aktywnych rezerwacji do rozliczenia.");
-                return;
-            }
-
-            Console.WriteLine("ID | Klient | Wycieczka | Do zapłaty");
-            foreach (DataRow r in dt.Rows)
-            {
-                Console.WriteLine($"[{r["id_rezerwacji"]}] {r["nazwisko"]} - {r["cel"]} ({r["cena"]} PLN)");
-            }
-
-            Console.Write("\nPodaj ID Rezerwacji: ");
+            Console.WriteLine("\n--- ROZLICZENIE PŁATNOŚCI ---");
+            Console.Write("Podaj ID Rezerwacji: ");
             string idR = Console.ReadLine();
-            Console.Write("Kwota wpłaty: ");
-            string kwota = Console.ReadLine();
 
-            if (string.IsNullOrWhiteSpace(idR) || string.IsNullOrWhiteSpace(kwota))
+            if (string.IsNullOrWhiteSpace(idR)) return;
+
+           
+            DataTable check = db.GetTable($"SELECT id_rezerwacji FROM rezerwacje WHERE id_rezerwacji = {idR}");
+
+            if (check.Rows.Count == 0)
             {
-                Console.WriteLine("BŁĄD: Wszystkie pola są wymagane!");
+                Console.WriteLine($"BŁĄD: Nie znaleziono rezerwacji o ID: {idR}!");
                 return;
             }
 
-            string sqlPay = $"INSERT INTO platnosci (id_rezerwacji, kwota, data_platnosci) VALUES ({idR}, {kwota}, CURDATE())";
+            Console.Write("Podaj kwotę wpłaty: ");
+            string kwota = Console.ReadLine();
+            string kwotaSql = kwota.Replace(',', '.');
+
+            string sql = $"INSERT INTO platnosci (id_rezerwacji, kwota, data_platnosci) VALUES ({idR}, {kwotaSql}, CURDATE())";
 
             try
             {
-                db.ExecuteCommand(sqlPay);
-                Console.WriteLine("\nSukces: Płatność została zaksięgowana!");
+                db.ExecuteCommand(sql);
+                Console.WriteLine("Sukces: Płatność zaksięgowana.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nBłąd podczas rozliczenia: " + ex.Message);
+                Console.WriteLine("Błąd zapisu: " + ex.Message);
             }
         }
     }
