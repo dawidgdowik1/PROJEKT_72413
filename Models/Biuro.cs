@@ -9,12 +9,7 @@ namespace PROJEKT_72413.Models
         public string Miasto { get; set; }
         public string Adres { get; set; }
 
-        public Pracownik Pracownik
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public Pracownik Pracownik { get; set; }
+      
     }
 }

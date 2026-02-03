@@ -9,10 +9,12 @@ namespace PROJEKT_72413
     {
         static void Main(string[] args)
         {
-            IDataService db = new DatabaseService();
+            // Tworzymy połączenie z naszą bazą danych
+            IUslugaDanych db = new ObslugaBazy();
 
             while (true)
             {
+                // Czyszczenie konsoli i wyświetlanie menu głównego
                 Console.Clear();
                 Console.WriteLine("--- SYSTEM BIURA PODRÓŻY ---");
                 Console.WriteLine("1. Lista Wycieczek (Zarządzanie ofertami)");
@@ -22,9 +24,11 @@ namespace PROJEKT_72413
                 Console.WriteLine("0. Koniec");
                 Console.Write("Wybór: ");
 
+                // Pobranie wyboru od użytkownika
                 string opcja = Console.ReadLine();
                 if (opcja == "0") break;
 
+                // Przełącznik sterujący opcjami menu
                 switch (opcja)
                 {
                     case "1":
@@ -44,7 +48,9 @@ namespace PROJEKT_72413
                 Console.ReadKey();
             }
         }
-        static void ZarzadzajOfertami(IDataService db)
+
+        // Metoda obsługująca CRUD wycieczek
+        static void ZarzadzajOfertami(IUslugaDanych db)
         {
             while (true)
             {
@@ -63,21 +69,21 @@ namespace PROJEKT_72413
                 switch (wybor)
                 {
                     case "1":
-                        
+                        // Wyświetlanie listy wycieczek
                         string sqlRead = "SELECT * FROM wycieczki";
-                        DataTable dt = db.GetTable(sqlRead);
+                        DataTable dt = db.PobierzTabele(sqlRead);
                         foreach (DataRow r in dt.Rows)
                             Console.WriteLine($"ID: {r["id_wycieczki"]} | Cel: {r["cel"]} | Cena: {r["cena"]} PLN");
                         break;
 
                     case "2":
-                      
+                        // Dodawanie nowej wycieczki do bazy
                         Console.Write("Cel: "); string cel = Console.ReadLine();
                         Console.Write("Cena: "); string cena = Console.ReadLine();
                         Console.Write("ID Hotelu: "); string hotel = Console.ReadLine();
                         if (!string.IsNullOrEmpty(cel))
                         {
-                            db.ExecuteCommand($"INSERT INTO wycieczki (cel, cena, id_hotelu) VALUES ('{cel}', {cena}, {hotel})");
+                            db.WykonajPolecenie($"INSERT INTO wycieczki (cel, cena, id_hotelu) VALUES ('{cel}', {cena}, {hotel})");
                             Console.WriteLine("Dodano ofertę!");
                         }
                         break;
@@ -85,9 +91,9 @@ namespace PROJEKT_72413
                     case "3":
                         Console.WriteLine("\n--- EDYCJA OFERTY ---");
 
-                        
+                        // Pobranie aktualnych danych do edycji
                         string sqlList = "SELECT * FROM wycieczki";
-                        DataTable dtEdit = db.GetTable(sqlList);
+                        DataTable dtEdit = db.PobierzTabele(sqlList);
 
                         if (dtEdit.Rows.Count == 0)
                         {
@@ -118,12 +124,12 @@ namespace PROJEKT_72413
                         Console.Write("Podaj nową cenę: ");
                         string nowaCena = Console.ReadLine();
 
-                        
+                        // Aktualizacja rekordu w bazie (UPDATE)
                         string sqlUpdate = $"UPDATE wycieczki SET cel = '{nowyCel}', cena = {nowaCena} WHERE id_wycieczki = {idE}";
 
                         try
                         {
-                            db.ExecuteCommand(sqlUpdate);
+                            db.WykonajPolecenie(sqlUpdate);
                             Console.WriteLine("\nSukces: Oferta została zaktualizowana!");
                         }
                         catch (Exception ex)
@@ -133,9 +139,9 @@ namespace PROJEKT_72413
                         break;
 
                     case "4":
-                        
+                        // Usuwanie wycieczki z bazy (DELETE)
                         Console.Write("Podaj ID wycieczki do usunięcia: "); string idD = Console.ReadLine();
-                        db.ExecuteCommand($"DELETE FROM wycieczki WHERE id_wycieczki = {idD}");
+                        db.WykonajPolecenie($"DELETE FROM wycieczki WHERE id_wycieczki = {idD}");
                         Console.WriteLine("Oferta usunięta!");
                         break;
                 }
@@ -144,7 +150,8 @@ namespace PROJEKT_72413
             }
         }
 
-        static void DodajKlienta(IDataService db)
+        // Metoda dodająca nowego klienta
+        static void DodajKlienta(IUslugaDanych db)
         {
             Console.WriteLine("\n--- DODAWANIE NOWEGO KLIENTA ---");
             Klient k = new Klient();
@@ -153,7 +160,7 @@ namespace PROJEKT_72413
             Console.Write("Nazwisko: "); k.Nazwisko = Console.ReadLine();
             Console.Write("Email: "); k.Email = Console.ReadLine();
 
-          
+            // Sprawdzenie czy pola nie są puste
             if (string.IsNullOrWhiteSpace(k.Imie) || string.IsNullOrWhiteSpace(k.Nazwisko))
             {
                 Console.WriteLine("BŁĄD: Imię i nazwisko są wymagane!");
@@ -164,7 +171,7 @@ namespace PROJEKT_72413
 
             try
             {
-                db.ExecuteCommand(sql);
+                db.WykonajPolecenie(sql);
                 Console.WriteLine("Sukces: Klient został dodany do bazy!");
             }
             catch (Exception ex)
@@ -173,23 +180,25 @@ namespace PROJEKT_72413
             }
         }
 
-        static void ZrobRezerwacje(IDataService db)
+        // Metoda tworząca nową rezerwację
+        static void ZrobRezerwacje(IUslugaDanych db)
         {
             Console.WriteLine("\n--- NOWA REZERWACJA ---");
 
-          
-            DataTable dtK = db.GetTable("SELECT id_klienta, imie, nazwisko FROM klienci");
+            // Pobieramy listę klientów
+            DataTable dtK = db.PobierzTabele("SELECT id_klienta, imie, nazwisko FROM klienci");
             if (dtK.Rows.Count == 0)
             {
                 Console.WriteLine("BŁĄD: Brak klientów w bazie. Dodaj klienta przed rezerwacją!");
-                return; 
+                return;
             }
 
             Console.WriteLine("LISTA KLIENTÓW:");
             foreach (DataRow r in dtK.Rows)
                 Console.WriteLine($"[{r["id_klienta"]}] {r["imie"]} {r["nazwisko"]}");
 
-            DataTable dtW = db.GetTable("SELECT id_wycieczki, cel FROM wycieczki");
+            // Pobieramy listę wycieczek
+            DataTable dtW = db.PobierzTabele("SELECT id_wycieczki, cel FROM wycieczki");
             if (dtW.Rows.Count == 0)
             {
                 Console.WriteLine("\nBŁĄD: Brak dostępnych wycieczek!");
@@ -200,17 +209,17 @@ namespace PROJEKT_72413
             foreach (DataRow r in dtW.Rows)
                 Console.WriteLine($"[{r["id_wycieczki"]}] {r["cel"]}");
 
-          
+            // Zbieranie danych do rezerwacji
             Console.Write("\nPodaj ID Klienta: "); string idK = Console.ReadLine();
             Console.Write("Podaj ID Wycieczki: "); string idW = Console.ReadLine();
 
-          
+            // Walidacja i zapis do bazy
             if (!string.IsNullOrWhiteSpace(idK) && !string.IsNullOrWhiteSpace(idW))
             {
                 string sql = $"INSERT INTO rezerwacje (id_klienta, id_wycieczki, data_rezerwacji) VALUES ({idK}, {idW}, CURDATE())";
                 try
                 {
-                    db.ExecuteCommand(sql);
+                    db.WykonajPolecenie(sql);
                     Console.WriteLine("Sukces: Rezerwacja zapisana!");
                 }
                 catch (Exception ex)
@@ -224,7 +233,8 @@ namespace PROJEKT_72413
             }
         }
 
-        static void RozliczPlatnosc(IDataService db)
+        // Metoda księgująca wpłaty
+        static void RozliczPlatnosc(IUslugaDanych db)
         {
             Console.WriteLine("\n--- ROZLICZENIE PŁATNOŚCI ---");
             Console.Write("Podaj ID Rezerwacji: ");
@@ -232,8 +242,8 @@ namespace PROJEKT_72413
 
             if (string.IsNullOrWhiteSpace(idR)) return;
 
-           
-            DataTable check = db.GetTable($"SELECT id_rezerwacji FROM rezerwacje WHERE id_rezerwacji = {idR}");
+            // Sprawdzamy czy rezerwacja istnieje
+            DataTable check = db.PobierzTabele($"SELECT id_rezerwacji FROM rezerwacje WHERE id_rezerwacji = {idR}");
 
             if (check.Rows.Count == 0)
             {
@@ -249,7 +259,7 @@ namespace PROJEKT_72413
 
             try
             {
-                db.ExecuteCommand(sql);
+                db.WykonajPolecenie(sql);
                 Console.WriteLine("Sukces: Płatność zaksięgowana.");
             }
             catch (Exception ex)

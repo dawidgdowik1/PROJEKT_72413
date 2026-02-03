@@ -92,8 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\DatabaseService.cs" />
-    <Compile Include="Database\IDataService.cs" />
+    <Compile Include="Database\IUslugaDanych.cs" />
+    <Compile Include="Database\ObslugaBazy.cs" />
     <Compile Include="Models\Biuro.cs" />
     <Compile Include="Models\Hotel.cs" />
     <Compile Include="Models\Klient.cs" />
