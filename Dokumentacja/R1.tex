@@ -1,0 +1,138 @@
+\chapter{Opis techniczny i struktura projektu}
+
+W tym rozdziale przedstawiono wykorzystane technologie, strukturę bazy danych oraz kluczowe elementy kodu źródłowego aplikacji.
+
+\section{Specyfikacja technologiczna i narzędzia programistyczne}
+
+Proces wytwórczy oprogramowania oparto na nowoczesnym stosie technologicznym, który gwarantuje wysoką wydajność oraz bezpieczeństwo typów.
+
+\subsection*{Język programowania i platforma uruchomieniowa}
+Jako główny język programowania wykorzystano \textbf{C\# w wersji .NET 8.0}. Wybór ten podyktowany był dojrzałością platformy oraz wsparciem dla programowania obiektowego i operacji asynchronicznych podczas komunikacji z bazą danych.
+
+\subsection*{Zintegrowane środowisko i system kontroli wersji}
+Implementację logiki biznesowej przeprowadzono w \textbf{Microsoft Visual Studio 2022}. Całość prac monitorowano przy użyciu systemu kontroli wersji \textbf{Git}, a kod umieszczono w repozytorium na platformie \textbf{GitHub}.
+
+\subsection*{System zarządzania bazą danych}
+Warstwę trwałości danych oparto na serwerze \textbf{MySQL 8.0}. Do fizycznej administracji bazą oraz wykonywania zapytań SQL wykorzystano środowisko \textbf{MySQL Workbench}, natomiast schemat logiczny (diagram ERD) na potrzeby dokumentacji opracowano w narzędziu \textbf{Draw.io}.
+
+\section{Architektura systemu i analiza struktury klas}
+
+Projekt systemu składa się z klas powiązanych relacjami dziedziczenia oraz implementujących interfejsy dostępowe.
+
+\begin{sidewaysfigure}
+    \centering
+  
+    \includegraphics[width=0.9\textheight, keepaspectratio]{ClassDiagram.png} 
+    \caption{Szczegółowy diagram klas systemu z uwzględnieniem dziedziczenia i klas abstrakcyjnych.}
+    \label{fig:diagram_klas_final}
+\end{sidewaysfigure}
+
+\subsection*{Analiza hierarchii klas i paradygmatu OOP}
+W systemie wyodrębniono następujące poziomy zależności:
+\begin{itemize}
+    \item \textbf{Klasa abstrakcyjna \texttt{ObiektBazy}}: Definiuje wspólne właściwości (np. identyfikator) dla wszystkich elementów zapisywanych w bazie danych.
+    \item \textbf{Klasa abstrakcyjna \texttt{Osoba}}: Służy jako szablon dla wszystkich użytkowników systemu, przechowując dane teleadresowe.
+    \item \textbf{Klasy \texttt{Klient} oraz \texttt{Pracownik}}: Specjalizują klasę nadrzędną \texttt{Osoba} o atrybuty specyficzne dla swoich ról.
+    \item \textbf{Klasy operacyjne}: \texttt{Wycieczka, Hotel, Biuro} oraz \texttt{Platnosc} – odpowiadają za konkretne domeny biznesowe.
+    \item \textbf{Klasa \texttt{Rezerwacja}}: Pełni rolę klasy asocjacyjnej, integrującej obiekty klas \texttt{Klient}, \texttt{Wycieczka} oraz \texttt{Pracownik}.
+   
+\end{itemize}
+
+\section{Projekt bazy danych (MySQL)}
+
+Model danych (diagram ERD) zaprezentowany poniżej został przygotowany w programie \textbf{Draw.io}, odwzorowując strukturę zaimplementowaną fizycznie na serwerze MySQL. Cały system składa się z siedmiu tabel, które są ze sobą powiązane logicznie. Każda tabela odpowiada za inny obszar działalności biura podróży – od danych klientów, przez ofertę wycieczek, aż po finanse.
+
+Poniżej znajduje się szczegółowy opis każdej z tabel oraz zawartych w nich kolumn:
+
+\subsection*{1. Tabela \texttt{rezerwacje}}
+Jest to najważniejsza tabela w systemie, znajdująca się w centrum diagramu. Łączy ona wszystkie pozostałe informacje w jedną całość.
+\begin{itemize}
+    \item \texttt{id\_rezerwacji} – unikalny numer każdej rezerwacji (klucz główny).
+    \item \texttt{data\_rezerwacji} – data, kiedy klient dokonał zakupu wycieczki.
+    \item \texttt{id\_klienta} – informacja, kto dokonał rezerwacji (klucz obcy do tabeli klientów).
+    \item \texttt{id\_wycieczki} – informacja, co zostało kupione (klucz obcy do tabeli wycieczek).
+    \item \texttt{id\_pracownika} – identyfikator osoby z obsługi, która przyjęła zamówienie.
+\end{itemize}
+
+\subsection*{2. Tabela \texttt{klienci}}
+Przechowuje dane osobowe osób korzystających z usług biura.
+\begin{itemize}
+    \item \texttt{id\_klienta} – unikalny identyfikator klienta w bazie.
+    \item \texttt{imie} oraz \texttt{nazwisko} – podstawowe dane personalne.
+    \item \texttt{email} – adres poczty elektronicznej do kontaktu i wysyłki biletów.
+    \item \texttt{telefon} – numer telefonu kontaktowego.
+\end{itemize}
+
+\subsection*{3. Tabela \texttt{wycieczki}}
+To katalog dostępnych ofert turystycznych.
+\begin{itemize}
+    \item \texttt{id\_wycieczki} – numer identyfikacyjny oferty.
+    \item \texttt{cel} – nazwa miejsca docelowego lub nazwa wycieczki.
+    \item \texttt{cena} – koszt wycieczki dla jednej osoby. Użyłem tu typu \texttt{DECIMAL(10,2)}, aby dokładnie przechowywać kwoty walutowe.
+    \item \texttt{id\_hotelu} – przypisanie konkretnego hotelu do danej oferty.
+\end{itemize}
+
+\subsection*{4. Tabela \texttt{hotele}}
+Służy jako baza miejsc noclegowych wykorzystywanych w wycieczkach.
+\begin{itemize}
+    \item \texttt{id\_hotelu} – identyfikator hotelu.
+    \item \texttt{nazwa\_hotelu} – pełna nazwa obiektu.
+    \item \texttt{lokalizacja} – miasto lub region, w którym znajduje się hotel.
+    \item \texttt{standard} – liczba gwiazdek lub ocena standardu obiektu.
+\end{itemize}
+
+\subsection*{5. Tabela \texttt{pracownicy}}
+Lista osób zatrudnionych w biurze podróży.
+\begin{itemize}
+    \item \texttt{id\_pracownika} – numer identyfikacyjny pracownika.
+    \item \texttt{imie} oraz \texttt{nazwisko} – dane pracownika.
+    \item \texttt{id\_biura} – informacja, w której placówce stacjonarnej pracuje dana osoba.
+\end{itemize}
+
+\subsection*{6. Tabela \texttt{biura}}
+Spis fizycznych placówek biura podróży.
+\begin{itemize}
+    \item \texttt{id\_biura} – numer identyfikacyjny placówki.
+    \item \texttt{nazwa} – nazwa własna oddziału.
+    \item \texttt{miasto} oraz \texttt{adres} – dokładna lokalizacja biura.
+\end{itemize}
+
+\newpage
+\subsection*{7. Tabela \texttt{platnosci}}
+Rejestruje wpłaty dokonywane przez klientów.
+\begin{itemize}
+    \item \texttt{id\_platnosci} – unikalny numer transakcji.
+    \item \texttt{kwota} – wpłacona suma pieniędzy (typ \texttt{DECIMAL}).
+    \item \texttt{data\_platnosci} – dzień zaksięgowania wpłaty.
+    \item \texttt{id\_rezerwacji} – przypisanie płatności do konkretnego zamówienia.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    
+    \includegraphics[width=0.9\textwidth]{mysql_diagram.png}
+    \caption{Fizyczny model danych (ERD) – struktura tabel w systemie MySQL.}
+    \label{fig:mysql_diagram}
+\end{figure}
+
+\newpage 
+\section{Wymagania systemowe i sprzętowe}
+
+W celu zapewnienia stabilnej i wydajnej pracy systemu, środowisko docelowe musi spełniać określone parametry techniczne. Poniżej przedstawiono minimalną konfigurację niezbędną do uruchomienia aplikacji klienckiej oraz nawiązania połączenia z bazą danych.
+
+\subsection*{Wymagania sprzętowe}
+\begin{itemize}
+    \item \textbf{Procesor}: Jednostka wielordzeniowa o architekturze x64, taktowanie minimum 2.0 GHz (zalecane serie Intel Core i5 lub odpowiedniki AMD Ryzen).
+    \item \textbf{Pamięć RAM}: Minimum 4 GB (zalecane 8 GB dla zapewnienia płynności działania systemu operacyjnego i bazy danych).
+    \item \textbf{Przestrzeń dyskowa}: Minimum 500 MB wolnej przestrzeni na dysku twardym (zalecany dysk SSD) na pliki aplikacji i logi systemowe.
+    \item \textbf{Wyświetlacz}: Monitor o rozdzielczości minimalnej 1366x768 pikseli (zalecane Full HD 1920x1080).
+    \item \textbf{Urządzenia wejścia}: Klawiatura oraz mysz komputerowa.
+\end{itemize}
+
+\subsection*{Wymagania programowe}
+\begin{itemize}
+    \item \textbf{System operacyjny}: Microsoft Windows 10 (wersja 20H2 lub nowsza) lub Windows 11.
+    \item \textbf{Platforma uruchomieniowa}: Zainstalowane środowisko \textbf{.NET Desktop Runtime 8.0} (lub nowsze).
+    \item \textbf{Serwer bazy danych}: Dostęp do instancji \textbf{MySQL Server 8.0} (lokalnie lub sieciowo).
+    \item \textbf{Połączenie sieciowe}: Wymagane aktywne połączenie sieciowe w przypadku, gdy baza danych znajduje się na zdalnym serwerze.
+\end{itemize}

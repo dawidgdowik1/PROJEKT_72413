@@ -1,0 +1,83 @@
+\chapter{Prezentacja warstwy użytkowej projektu}
+
+Warstwa wizualna aplikacji stanowi główny kanał komunikacji z systemem. Kluczowym aspektem interfejsu jest jego pełna integracja z silnikiem bazy danych MySQL – przedstawione poniżej widoki nie są jedynie makietami, lecz w pełni zaimplementowanymi funkcjonalnościami operującymi na rzeczywistych rekordach.
+
+\section{Menu główne i nawigacja}
+
+Główny panel sterowania stanowi punkt wyjścia dla wszystkich operacji biznesowych. Nawigacja opiera się na wyborze numerycznym, a każda wybrana opcja inicjuje połączenie z bazą danych i pobranie aktualnych informacji.
+
+\vspace{1em}
+
+\subsection*{Interfejs panelu głównego}
+Po uruchomieniu programu użytkownik widzi listę dostępnych modułów (1-4). Wybór konkretnej cyfry wywołuje odpowiednią metodę w kodzie C\#, która odpowiada za komunikację z konkretną tabelą w bazie danych. System został zabezpieczony przed wyborem nieprawidłowej opcji – w przypadku naciśnięcia klawisza spoza zakresu, mechanizm \texttt{default} w instrukcji sterującej poinformuje użytkownika o błędzie i pozwoli na ponowny wybór.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{menu.png}
+    \caption{Główne menu nawigacyjne aplikacji CLI połączonej z bazą MySQL.}
+    \label{fig:menu}
+\end{figure}
+
+\newpage
+\section{Zarządzanie zasobami biura}
+
+W tej sekcji opisano moduły odpowiedzialne za obsługę ofert wycieczkowych oraz bazę osób zarejestrowanych w systemie.
+
+\vspace{1em}
+
+\subsection*{Opcja 1: Zarządzanie ofertami wycieczek (Dane z bazy)}
+Moduł ten wyświetla listę wycieczek pobieraną bezpośrednio z tabeli \texttt{wycieczki}. Widoczne na zrzucie ekranu pozycje, takie jak „Nurkowanie w Morzu Czerwonym”, są rekordami zaimplementowanymi w bazie. Funkcje edycji i usuwania natychmiastowo aktualizują stan bazy danych. Dodatkowo, operacja usuwania jest chroniona blokiem \texttt{try-catch}, co zapobiega awarii programu w przypadku próby usunięcia wycieczki powiązanej z istniejącą rezerwacją.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{zarz_ofert.png}
+    \caption{Podmenu zarządzania ofertami z listą wycieczek pobraną z bazy danych.}
+    \label{fig:zarz_ofert}
+\end{figure}
+
+\vspace{1em}
+
+
+\subsection*{Opcja 2: Rejestracja nowych klientów}
+Funkcja ta pozwala na dodanie nowego klienta do tabeli \texttt{klienci}. Po wpisaniu danych przez pracownika, aplikacja wysyła zapytanie \texttt{INSERT}, a silnik bazy danych automatycznie generuje unikalny numer ID zgodnie z regułą klucza podstawowego. Przed wysłaniem danych do bazy zaimplementowano prostą walidację, która sprawdza, czy kluczowe pola (takie jak imię czy nazwisko) nie są puste, co zapewnia integralność danych.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{dodaj_klient.png}
+    \caption{Proces wprowadzania danych nowego klienta do systemu.}
+    \label{fig:dodaj_klient}
+\end{figure}
+
+
+\section{Procesy rezerwacyjne i finansowe}
+
+Ostatni etap prezentacji obejmuje kluczową logikę aplikacji, czyli łączenie klientów z ofertami oraz finalizację płatności.
+
+\vspace{1em}
+
+\subsection*{Opcja 3: Tworzenie nowej rezerwacji}
+Moduł rezerwacji tworzy powiązania w tabeli asocjacyjnej \texttt{rezerwacje}. Wykorzystywane są tutaj dane zaimplementowane w poprzednich krokach (ID klienta i ID wycieczki), co pozwala na zachowanie spójności referencyjnej między wszystkimi elementami systemu. Jeśli użytkownik poda ID, które nie istnieje w bazie (np. ID nieistniejącego hotelu), system przechwyci wyjątek SQL i wyświetli stosowny komunikat, zamiast przerywać działanie aplikacji.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{rezerwacja.png}
+    \caption{Interfejs procesu rezerwacji biletów dla klienta.}
+    \label{fig:rezerwacja}
+\end{figure}
+
+\vspace{1em}
+
+\subsection*{Opcja 4: Rozliczanie płatności}
+System finansowy operuje na precyzyjnych kwotach typu \texttt{DECIMAL(10,2)}. Moduł płatności umożliwia przypisanie wpłaty do konkretnej rezerwacji, co aktualizuje stan tabeli \texttt{platnosci}. Jest to ostateczny etap ścieżki transakcyjnej zaimplementowanej w projekcie. Dzięki zastosowaniu odpowiedniego typu danych, system jest odporny na błędy zaokrągleń typowe dla operacji zmiennoprzecinkowych.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{rozlicz.png}
+    \caption{Okno obsługi płatności za rezerwację.}
+    \label{fig:rozlicz}
+\end{figure}
+
+
+\subsection*{Podsumowanie pracy z interfejsem}
+
+Zastosowanie tekstowego interfejsu użytkownika w pełni integruje się z logiką bazy danych \newline MySQL. Każda zaimplementowana funkcja została przetestowana pod kątem poprawności przesyłu danych oraz odporności na podstawowe błędy użytkownika, co gwarantuje, że system jest stabilnym narzędziem wspomagającym pracę w biurze podróży.

@@ -1,0 +1,24 @@
+\chapter{Wstęp i założenia projektu}
+
+Przedmiotem projektu jest system obsługi biura podróży, zrealizowany w języku C\#. Wybrano formę aplikacji konsolowej, co pozwoliło na skoncentrowanie się na logice biznesowej oraz poprawnej komunikacji z relacyjną bazą danych MySQL. System został zaprojektowany jako narzędzie wspomagające codzienną pracę biura, umożliwiając zarządzanie ofertami wycieczek, ewidencję klientów oraz monitorowanie procesów rezerwacyjnych i finansowych. Wszystkie dane są składowane na serwerze bazy danych, co zapewnia ich trwałość i bezpieczeństwo po zakończeniu sesji programu.
+
+\subsection*{Cele projektu}
+Głównym celem było opracowanie stabilnego systemu zarządzania danymi o wysokim stopniu powiązania. Wybór tematyki biura podróży pozwolił na praktyczne zastosowanie relacyjnej bazy danych, w której informacje o klientach, wycieczkach i hotelach wzajemnie na siebie oddziałują. Istotnym założeniem było również wykorzystanie paradygmatów programowania obiektowego, takich jak dziedziczenie czy enkapsulacja, w celu zapewnienia przejrzystości i modularności kodu źródłowego.
+
+\subsection*{Wymagania funkcjonalne (WF)}
+W ramach funkcjonalności systemu zdefiniowano następujące operacje, które zostaną szczegółowo opisane w dalszej części dokumentacji:
+\begin{itemize}
+    \item \textbf{WF1 Zarządzanie ofertami:} Możliwość dodawania nowych wycieczek, aktualizacji ich parametrów (np. ceny, terminu) oraz usuwania rekordów z bazy.
+    \item \textbf{WF2 Ewidencja klientów:} Rejestrowanie danych osób korzystających z usług biura oraz zarządzanie ich profilami.
+    \item \textbf{WF3 Obsługa rezerwacji:} Proces łączenia klienta z wybraną ofertą oraz przypisanie pracownika odpowiedzialnego za daną transakcję.
+    \item \textbf{WF4 Rozliczenia finansowe:} Rejestrowanie wpłat, monitorowanie statusu płatności i automatyczne wyliczanie pozostałych należności dla każdej rezerwacji.
+\end{itemize}
+\newpage
+\subsection*{Wymagania niefunkcjonalne (WN)}
+Z punktu widzenia technicznego, system spełnia następujące wymagania jakościowe:
+\begin{itemize}
+    \item \textbf{WN1 Trwałość danych (Persystencja):} Wykorzystanie serwerowego systemu MySQL gwarantuje trwałe przechowywanie informacji.
+    \item \textbf{WN2 Walidacja danych:} Implementacja mechanizmów sprawdzających poprawność wprowadzanych informacji (np. blokada ujemnych cen, weryfikacja formatów tekstowych).
+    \item \textbf{WN3 Kontrola wersji:} Wykorzystanie systemu Git do zarządzania postępami prac oraz archiwizacja kodu technicznego na platformie GitHub.
+    \item \textbf{WN4 Odporność na błędy:} Zastosowanie bloków obsługi wyjątków (try-catch), co zapobiega awaryjnemu zamykaniu aplikacji w przypadku problemów z połączeniem z bazą danych.
+\end{itemize}

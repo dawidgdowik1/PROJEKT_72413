@@ -1,0 +1,53 @@
+\chapter{Harmonogram realizacji projektu}
+
+Proces wytwórczy oprogramowania został precyzyjnie rozplanowany w czasie, co pozwoliło na terminową i rzetelną implementację wszystkich warstw systemu. Realizacja projektu została podzielona na logiczne etapy, począwszy od analizy wymagań, przez projektowanie architektury, aż po implementację i testy. 
+
+\section{Szczegółowy podział zadań}
+Harmonogram prac został zaprezentowany w dwóch uzupełniających się formach: jako zestawienie tabelaryczne zawierające dokładne daty graniczne oraz jako wizualizacja graficzna na osi czasu. Zarówno tabela z danymi, jak i sam wykres Gantta zostały opracowane w programie Microsoft Excel przy użyciu profesjonalnego szablonu „Elastyczny wykres Gantta”, co pozwoliło na precyzyjne odwzorowanie ram czasowych i postępów prac. 
+
+\vspace{12pt} 
+
+Przyjęta strategia planowania opierała się na realistycznym oszacowaniu pracochłonności poszczególnych zadań, co pozwoliło na zachowanie odpowiedniego marginesu czasowego na wypadek wystąpienia nieprzewidzianych trudności technicznych. Systematyczna aktualizacja statusu poszczególnych etapów wewnątrz arkusza kalkulacyjnego zapewniała pełną kontrolę nad przebiegiem procesu wytwórczego i umożliwiła terminowe zakończenie prac nad kluczowymi modułami aplikacji.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{tabelaganta}
+    \caption{Szczegółowy harmonogram i status realizacji zadań}
+    \label{tab:tabelagantta}
+\end{figure}
+
+
+W zestawieniu tabelarycznym (Rys. \ref{tab:tabelagantta}) przypisano stopnie ryzyka do poszczególnych zadań. Etapy takie jak projektowanie bazy danych oraz implementacja kodu oznaczono jako „Wysokie ryzyko”, ze względu na ich kluczowe znaczenie dla stabilności całego systemu – ewentualne błędy na tych etapach mogłyby skutkować koniecznością przebudowy znacznej części aplikacji.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{wykresgantta.png}
+    \caption{Harmonogram prac projektowych w postaci wykresu Gantta}
+    \label{fig:wykresgantta}
+\end{figure}
+
+Zastosowanie podziału na konkretne etapy pozwoliło uniknąć chaosu podczas pracy. W ramach fazy analitycznej, trwającej 30 dni, opracowano nie tylko wymagania funkcjonalne, ale również stworzono wstępne makiety interfejsu użytkownika oraz diagramy przypadków użycia. Pozwoliło to na uniknięcie błędów logicznych przed przystąpieniem do pisania kodu w języku C\#. 
+\newline Wykres Gantta z kolei pokazuje tzw. ścieżkę projektu: wyraźnie widać, że zakończenie fazy projektowej było warunkiem koniecznym do rozpoczęcia prac programistycznych.
+
+
+\section{Weryfikacja realizacji (Git)}
+Potwierdzeniem realizacji harmonogramu zgodnie z założeniami jest historia zmian w repozytorium kodu źródłowego. Systematyczność prac odzwierciedlają daty poszczególnych zatwierdzeń (commitów), które pokrywają się z zaplanowanymi etapami.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{commity.png}
+    \caption{Historia zmian w repozytorium GitHub potwierdzająca przebieg prac}
+    \label{fig:commity}
+\end{figure}
+
+
+Jak pokazano na Rysunku \ref{fig:commity}, historia zmian odzwierciedla konkretne kamienie milowe, takie jak implementacja modułu CRUD dla ofert czy konfiguracja połączenia z bazą danych (DatabaseService). Każdy etap widoczny w harmonogramie znajduje swoje bezpośrednie odzwierciedlenie w aktywności w repozytorium. Taki sposób pracy gwarantuje bezpieczeństwo kodu oraz udowadnia, że projekt powstawał sukcesywnie i systematycznie.
+
+\textbf{W repozytorium udostępniono kompletny zestaw plików projektowych, obejmujący kod źródłowy aplikacji (C\#), skrypty SQL definiujące strukturę i dane początkowe bazy danych oraz pliki źródłowe niniejszej dokumentacji przygotowanej w systemie LaTeX.}
+\vspace{10pt}
+\noindent
+\textbf{Adres repozytorium:}
+\\
+\url{https://github.com/dawidgdowik1/PROJEKT_72413.git} [dostęp: 04.02.2026]
+\vspace{10pt}
+
